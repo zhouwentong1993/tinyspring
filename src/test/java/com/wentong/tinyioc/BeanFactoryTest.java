@@ -1,11 +1,8 @@
 package com.wentong.tinyioc;
 
-import com.wentong.tinyioc.AutowireCapableBeanFactory;
-import com.wentong.tinyioc.BeanDefinition;
-import com.wentong.tinyioc.BeanFactory;
+import com.wentong.tinyioc.factory.AutowireCapableBeanFactory;
+import com.wentong.tinyioc.factory.BeanFactory;
 import org.junit.Test;
-
-import javax.swing.text.DefaultEditorKit;
 
 public class BeanFactoryTest {
 
@@ -27,9 +24,17 @@ public class BeanFactoryTest {
 
         BeanDefinition beanDefinition = new BeanDefinition();
         beanDefinition.setBeanClassName("com.wentong.tinyioc.HelloService");
+        PropertyValues propertyValues = new PropertyValues();
+        PropertyValue propertyValue = new PropertyValue();
+        propertyValue.setName("text");
+        propertyValue.setValue("haaha");
+        propertyValues.getPropertyValueList().add(propertyValue);
+        beanDefinition.setPropertyValues(propertyValues);
         beanFactory.registerBean("helloService", beanDefinition);
 
-        System.out.println(beanFactory.getBean("helloService"));
+
+        HelloService helloService = (HelloService) beanFactory.getBean("helloService");
+        helloService.sayHello();
 
     }
 }

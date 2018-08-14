@@ -6,6 +6,7 @@ public class BeanDefinition {
     private Object bean;
     private Class beanClass;
     private String beanClassName;
+    private PropertyValues propertyValues;
 
     public BeanDefinition() {
     }
@@ -35,9 +36,16 @@ public class BeanDefinition {
         try {
             this.beanClass = Class.forName(beanClassName);
         } catch (ClassNotFoundException e) {
-            System.out.println(e);
-            this.beanClass = null;
+            throw new IllegalArgumentException("初始化 beanClass 失败，失败原因：" + e);
         }
+    }
+
+    public PropertyValues getPropertyValues() {
+        return propertyValues;
+    }
+
+    public void setPropertyValues(PropertyValues propertyValues) {
+        this.propertyValues = propertyValues;
     }
 
     @Override

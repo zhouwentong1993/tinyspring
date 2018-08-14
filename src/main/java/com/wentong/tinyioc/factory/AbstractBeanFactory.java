@@ -1,4 +1,6 @@
-package com.wentong.tinyioc;
+package com.wentong.tinyioc.factory;
+
+import com.wentong.tinyioc.BeanDefinition;
 
 import java.util.concurrent.ConcurrentHashMap;
 
