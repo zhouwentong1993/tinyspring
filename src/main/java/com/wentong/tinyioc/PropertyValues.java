@@ -10,6 +10,8 @@ public class PropertyValues {
     public void addProperty(PropertyValue propertyValue) {
         if (propertyValueList.contains(propertyValue)) {
             propertyValueList.set(propertyValueList.indexOf(propertyValue), propertyValue);
+        } else {
+            propertyValueList.add(propertyValue);
         }
     }
 

@@ -2,6 +2,9 @@ package com.wentong.tinyioc;
 
 import com.wentong.tinyioc.factory.AutowireCapableBeanFactory;
 import com.wentong.tinyioc.factory.BeanFactory;
+import com.wentong.tinyioc.io.ResourceLoader;
+import com.wentong.tinyioc.io.URLResourceLoader;
+import com.wentong.tinyioc.xml.XmlBeanDefinitionReader;
 import org.junit.Test;
 
 public class BeanFactoryTest {
@@ -25,9 +28,7 @@ public class BeanFactoryTest {
         BeanDefinition beanDefinition = new BeanDefinition();
         beanDefinition.setBeanClassName("com.wentong.tinyioc.HelloService");
         PropertyValues propertyValues = new PropertyValues();
-        PropertyValue propertyValue = new PropertyValue();
-        propertyValue.setName("text");
-        propertyValue.setValue("haaha");
+        PropertyValue propertyValue = new PropertyValue("text","haha");
         propertyValues.getPropertyValueList().add(propertyValue);
         beanDefinition.setPropertyValues(propertyValues);
         beanFactory.registerBean("helloService", beanDefinition);
@@ -36,5 +37,17 @@ public class BeanFactoryTest {
         HelloService helloService = (HelloService) beanFactory.getBean("helloService");
         helloService.sayHello();
 
+    }
+
+    @Test
+    public void testXml() throws Exception{
+        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(new URLResourceLoader());
+        xmlBeanDefinitionReader.loadBeanDefinition("tinyioc.xml");
+
+        AutowireCapableBeanFactory beanFactory = new AutowireCapableBeanFactory();
+        xmlBeanDefinitionReader.getRegistry().forEach(beanFactory::registerBean);
+
+        HelloService helloService = (HelloService) beanFactory.getBean("helloService");
+        helloService.sayHello();
     }
 }
