@@ -1,5 +1,6 @@
 package com.wentong.tinyioc;
 
+import com.wentong.tinyioc.factory.AbstractBeanFactory;
 import com.wentong.tinyioc.factory.AutowireCapableBeanFactory;
 import com.wentong.tinyioc.factory.BeanFactory;
 import com.wentong.tinyioc.io.ResourceLoader;
@@ -45,6 +46,21 @@ public class BeanFactoryTest {
         xmlBeanDefinitionReader.loadBeanDefinition("tinyioc.xml");
 
         AutowireCapableBeanFactory beanFactory = new AutowireCapableBeanFactory();
+        xmlBeanDefinitionReader.getRegistry().forEach(beanFactory::registerBean);
+
+        HelloService helloService = (HelloService) beanFactory.getBean("helloService");
+        helloService.sayHello();
+    }
+
+    /**
+     * 测试延迟初始化
+     */
+    @Test
+    public void testLazyInit() {
+        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(new URLResourceLoader());
+        xmlBeanDefinitionReader.loadBeanDefinition("tinyioc.xml");
+
+        AbstractBeanFactory beanFactory = new AutowireCapableBeanFactory();
         xmlBeanDefinitionReader.getRegistry().forEach(beanFactory::registerBean);
 
         HelloService helloService = (HelloService) beanFactory.getBean("helloService");

@@ -4,6 +4,12 @@ public class HelloService {
 
     private String text;
 
+    private OutputService outputService;
+
+    public void setOutputService(OutputService outputService) {
+        this.outputService = outputService;
+    }
+
     public String getText() {
         return text;
     }
@@ -13,7 +19,6 @@ public class HelloService {
     }
 
     public void sayHello() {
-        System.out.println("hello world" + text);
-
+        outputService.output(text);
     }
 }

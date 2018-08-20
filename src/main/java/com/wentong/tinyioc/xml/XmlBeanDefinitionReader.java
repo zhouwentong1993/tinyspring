@@ -2,6 +2,7 @@ package com.wentong.tinyioc.xml;
 
 import com.wentong.tinyioc.AbstractBeanDefinitionReader;
 import com.wentong.tinyioc.BeanDefinition;
+import com.wentong.tinyioc.BeanReference;
 import com.wentong.tinyioc.PropertyValue;
 import com.wentong.tinyioc.io.ResourceLoader;
 import org.apache.commons.lang3.StringUtils;
@@ -66,6 +67,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         getRegistry().put(name, beanDefinition);
     }
 
+    /**
+     * 处理属性值
+     * @param ele
+     * @param beanDefinition
+     */
     private void processProperty(Element ele, BeanDefinition beanDefinition) {
         NodeList property = ele.getElementsByTagName("property");
         for (int i = 0; i < property.getLength(); i++) {
@@ -74,8 +80,19 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 Element element = (Element) item;
                 String name = element.getAttribute("name");
                 String value = element.getAttribute("value");
-                if (StringUtils.isNotBlank(name) && StringUtils.isNotBlank(value)) {
-                    beanDefinition.getPropertyValues().addProperty(new PropertyValue(name, value));
+                if (StringUtils.isNotBlank(name)) {
+                    if (StringUtils.isNotBlank(value)) {
+                        beanDefinition.getPropertyValues().addProperty(new PropertyValue(name, value));
+                    } else {
+                        String ref = element.getAttribute("ref");
+                        if (StringUtils.isNotBlank(ref)) {
+                            BeanReference beanReference = new BeanReference(ref);
+                            beanDefinition.getPropertyValues().addProperty(new PropertyValue(ref,beanReference));
+                        } else {
+                            throw new IllegalArgumentException("Configuration problem: <property> element for property '"
+                                    + name + "' must specify a ref or value");
+                        }
+                    }
                 }
             }
         }
