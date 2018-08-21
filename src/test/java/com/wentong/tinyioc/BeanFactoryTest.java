@@ -66,4 +66,19 @@ public class BeanFactoryTest {
         HelloService helloService = (HelloService) beanFactory.getBean("helloService");
         helloService.sayHello();
     }
+
+    @Test
+    public void preInstantiateSingletons() {
+        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(new URLResourceLoader());
+        xmlBeanDefinitionReader.loadBeanDefinition("tinyioc.xml");
+
+        AbstractBeanFactory beanFactory = new AutowireCapableBeanFactory();
+        xmlBeanDefinitionReader.getRegistry().forEach(beanFactory::registerBean);
+
+        beanFactory.preInstantiateSingletons();
+
+        HelloService helloService = (HelloService) beanFactory.getBean("helloService");
+        helloService.sayHello();
+
+    }
 }

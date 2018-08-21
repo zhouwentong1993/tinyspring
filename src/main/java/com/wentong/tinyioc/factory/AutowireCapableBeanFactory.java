@@ -25,10 +25,11 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
 
     /**
      * 给对应的 bean 赋属性值
-     * @param bean 待赋值的属性
+     *
+     * @param bean           待赋值的属性
      * @param beanDefinition beanDefinition 里的属性集合数据
      */
-    private void applyPropertyValues(Object bean,BeanDefinition beanDefinition) {
+    private void applyPropertyValues(Object bean, BeanDefinition beanDefinition) {
         for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValueList()) {
             try {
                 Field declaredField = bean.getClass().getDeclaredField(propertyValue.getName());
@@ -39,7 +40,7 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
                 if (value instanceof BeanReference) {
                     BeanReference beanReference = (BeanReference) value;
                     Object referenceBean = getBean(beanReference.getName());
-                    declaredField.set(referenceBean, value);
+                    declaredField.set(bean, referenceBean);
                 } else {
                     declaredField.set(bean, value);
                 }
