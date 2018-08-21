@@ -6,6 +6,8 @@ import com.wentong.tinyioc.BeanReference;
 import com.wentong.tinyioc.PropertyValue;
 import com.wentong.tinyioc.io.ResourceLoader;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -19,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlBeanDefinitionReader.class);
 
     public XmlBeanDefinitionReader(ResourceLoader resourceLoader) {
         super(resourceLoader);
@@ -38,7 +42,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             registerBeanDefinitions(doc);
             inputStream.close();
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            LOGGER.error("解析 xml 失败，失败原因：{}", e);
+            throw new IllegalStateException("xml 解析失败，原因：" + e.getMessage());
         }
     }
 

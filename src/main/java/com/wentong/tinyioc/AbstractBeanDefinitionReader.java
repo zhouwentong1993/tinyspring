@@ -8,7 +8,7 @@ import java.util.Map;
 
 public abstract class AbstractBeanDefinitionReader implements BeanDefinitionReader{
 
-    // 这个东西到底有什么含义，不太理解。
+    // 这个是用来承接 xml 或者注解解析文件得到的结果的，放到 Abstract 类里面，可以供底下所有的子类使用
     private Map<String,BeanDefinition> registry;
     private ResourceLoader resourceLoader;
 

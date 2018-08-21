@@ -13,6 +13,9 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
     public Object doCreateBeanDefinition(BeanDefinition beanDefinition) {
         try {
             Object bean = beanDefinition.getBeanClass().newInstance();
+            // 跟之前相比增加了这一行，因为之前注入的都是简单的属性，所以不会有重复注入的问题
+            // 但是这一次升级注入的是实体属性，循环注入时会有问题
+            beanDefinition.setBean(bean);
             applyPropertyValues(bean, beanDefinition);
             return bean;
         } catch (InstantiationException | IllegalAccessException e) {
